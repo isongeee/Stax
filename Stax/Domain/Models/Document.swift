@@ -10,9 +10,14 @@ final class Document {
     var pageOrSlideCount: Int
     var importedAt: Date
     var ocrUsed: Bool
+    var extractedAt: Date?
+    var extractionError: String?
 
     @Relationship(deleteRule: .cascade, inverse: \Deck.document)
     var decks: [Deck] = []
+
+    @Relationship(deleteRule: .cascade, inverse: \SourceChunk.document)
+    var chunks: [SourceChunk] = []
 
     init(
         id: UUID = UUID(),
@@ -29,6 +34,8 @@ final class Document {
         self.pageOrSlideCount = pageOrSlideCount
         self.importedAt = .now
         self.ocrUsed = ocrUsed
+        self.extractedAt = nil
+        self.extractionError = nil
     }
 
     var sourceKind: SourceKind {
